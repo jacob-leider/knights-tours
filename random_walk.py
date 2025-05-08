@@ -7,18 +7,18 @@ from chess import *
 from draw import *
 
 
-def advance(pos, moves):
+def advance(pos, moves, bounds=(0,8,0,8)):
     """Move in a random direction, or quite frankly, don't move at all if you 
     can't """
     x, y = pos
-    moves = list(good_moves(x, y, moves, visited))
+    moves = list(good_moves(x, y, moves, visited, bounds=bounds))
     if len(moves) == 0: 
         return None
 
     dx, dy = random.choice(moves)
     x2, y2 = x + dx, y + dy
 
-    if in_bounds(x2, y2) and (x2, y2) not in visited:
+    if in_bounds(x2, y2, bounds=bounds) and (x2, y2) not in visited:
         visited.add((x2, y2))
         x, y = x2, y2
     
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     screen = turtle.Screen()
     screen.tracer(0)
 
-    n = 8 # board size is n x n
+    n = 10 # board size is n x n
     side = 64
 
     # Grid.
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     # Find a path.
     while True:
         # Move in a random direction.
-        next_pos = advance(pos, knight_moves())
+        next_pos = advance(pos, knight_moves(), bounds=(0, n, 0, n))
         if next_pos is None:
             break
 
